@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en-US">
   <head>
+    {% load static %}
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="{% static 'appmetrica/style.css' %}">
+    <script src="{% static 'appmetrica/scripts.js' %}"></script>
     <title>Product view</title>
   </head>
   <body>
@@ -9,16 +12,18 @@
         <div class="flex-container">
             <h1>Products</h1>
             <div class="table-navbar"></div>
-            {% for entry in product_list %}
-            <div class="product-entry">
-                <form method="POST" action="{% url 'appmetrica:product' entry.str_name %}" name="{{ entry.id }}">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{ entry.id }}" name="in-name-prod-id">
-                    <input type="submit" value= "{{ entry }}">
-                </form>
-                <p> {{ entry }} </p>
+            <div class="table-contents">
+                {% for entry in product_list %}
+                <div class="product-entry" id="{{ entry.id }}" onclick="sendform(this)">
+                    <p class="entry-name">{{ entry.str_name }}</p>
+                    <form method="POST" action="{% url 'appmetrica:product' entry.str_name %}" name="{{ entry.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ entry.id }}" name="in-name-prod-id">
+                        <!--- <input type="submit" value= "{{ entry.str_name }}"> --->
+                    </form>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
   </body>
