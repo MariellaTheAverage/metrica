@@ -4,13 +4,25 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'appmetrica/style.css' %}">
     <script src="{% static 'appmetrica/scripts.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="utf-8" />
     <title>Product view</title>
   </head>
   <body>
     <div class="container">
         <div class="flex-container">
-            <h1>Graph view for {{ metric.str_name }}</h1>
+            <div class="table-header">
+                <div class="back-btn" onclick="redirectto({% url 'appmetrica:product' product.str_name %})"></div>
+                <h1>Graph view for metric "{{ metric.str_name }}"</h1>
+            </div>
+            <div class="table-contents">
+                <p>Data to be displayed:</p><br>
+                {% for entry in data %}
+                {{ entry.int_timestamp }} - {{ entry.int_value }}; 
+                {% endfor %}
+                <br>
+                <canvas id="metric-graph"></canvas>
+            </div>
         </div>
     </div>
   </body>

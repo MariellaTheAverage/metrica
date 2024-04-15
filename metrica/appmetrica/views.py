@@ -38,8 +38,21 @@ def view_metric(request, product_name, metric_name):
     if request.POST:
         pid = request.POST['product-id']
         mid = request.POST['metric-id']
-        return HttpResponse(f"Metric {mid} ({metric_name}) for product {pid} ({product_name})")
-    return HttpResponse("Empty query")
+        product = get_object_or_404(Product, pk=pid)
+        metric = get_object_or_404(Metric, pk=mid)
+        data = get_list_or_404(MetricValue, fk_metric=mid)
+        return render(
+            request,
+            "appmetrica/metric.html",
+            {
+                "product": product,
+                "metric": metric,
+                "data": data
+            }
+        )
+        # return HttpResponse(f"Metric {mid} ({metric_name}) for product {pid} ({product_name})")
+    else:
+        return HttpResponseRedirect(reverse('appmetrica:index'))
 
 # get a new metric value from systems (automated or manual)
 def submit_metric(request):
