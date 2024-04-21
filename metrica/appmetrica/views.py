@@ -2,6 +2,8 @@ from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import Product, Metric, MetricValue
 from django.urls import reverse
+from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 # view all products
 def index(request):
@@ -55,8 +57,24 @@ def view_metric(request, product_name, metric_name):
         return HttpResponseRedirect(reverse('appmetrica:index'))
 
 # get a new metric value from systems (automated or manual)
+@transaction.atomic
 def submit_metric(request):
     if request.POST:
         # get parameters of metric
         # insert into db
-        pass
+        pid = request.POST['product']
+        mid = request.POST['metric']
+        tstamp = request.POST['timestamp']
+        value = request.POST['value']
+
+        insert = MetricValue(fk_metric=mid, int_timestamp=tstamp, int_value=value)
+        try:
+            insert.save()
+        except Exception as e:
+            print(e)
+        else:
+            return HttpResponse("OK")
+    else:
+        print(request)
+        return HttpResponse("get request")
+        # return render(request, "submit.html")
