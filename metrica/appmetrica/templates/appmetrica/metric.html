@@ -12,7 +12,7 @@
     <div class="container">
         <div class="flex-container">
             <div class="table-header">
-                <div class="back-btn" onclick="redirectto({% url 'appmetrica:product' product.str_name %})"></div>
+                <div class="back-btn" onclick="redirectto('{% url 'appmetrica:product' product.str_name %}')"></div>
                 <h1>Graph view for metric "{{ metric.str_name }}"</h1>
             </div>
             <div class="table-contents">

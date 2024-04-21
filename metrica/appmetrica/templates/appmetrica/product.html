@@ -11,7 +11,7 @@
     <div class="container">
         <div class="flex-container">
             <div class="table-header">
-                <div class="back-btn" onclick="redirectto({% url 'appmetrica:index' %})"></div>
+                <div class="back-btn" onclick="redirectto('{% url 'appmetrica:index' %}')"></div>
                 <h1>Metrics for product "{{ product.str_name }}"</h1>
             </div>
             <div class="table-navbar"></div>
