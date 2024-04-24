@@ -37,7 +37,7 @@ def view_product(request, product_name):
 
 # view a graph for a specific metric in a product
 def view_metric(request, product_name, metric_name):
-    if request.POST:
+    if request.method == "POST":
         pid = request.POST['product-id']
         mid = request.POST['metric-id']
         product = get_object_or_404(Product, pk=pid)
@@ -56,10 +56,10 @@ def view_metric(request, product_name, metric_name):
     else:
         return HttpResponseRedirect(reverse('appmetrica:index'))
 
-# get a new metric value from systems (automated or manual)
-@transaction.atomic
+# set a new metric value from systems (automated)
+@csrf_exempt
 def submit_metric(request):
-    if request.POST:
+    if request.method == "POST":
         # get parameters of metric
         # insert into db
         pid = request.POST['product']
@@ -67,7 +67,9 @@ def submit_metric(request):
         tstamp = request.POST['timestamp']
         value = request.POST['value']
 
-        insert = MetricValue(fk_metric=mid, int_timestamp=tstamp, int_value=value)
+        metric = get_object_or_404(Metric, pk=mid)
+
+        insert = MetricValue(fk_metric=metric, int_timestamp=tstamp, int_value=value)
         try:
             insert.save()
         except Exception as e:
@@ -75,6 +77,4 @@ def submit_metric(request):
         else:
             return HttpResponse("OK")
     else:
-        print(request)
-        return HttpResponse("get request")
-        # return render(request, "submit.html")
+        return render(request, "appmetrica/submit.html")
