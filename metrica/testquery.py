@@ -1,10 +1,10 @@
 import requests
 
 data = {
-    "metric": 1,
+    "metric": 2,
     "product": 1,
-    "timestamp": 5,
-    "value": 4
+    "timestamp": 6,
+    "value": 7
 }
 
 '''
@@ -27,7 +27,7 @@ data = {
 url = "http://localhost:8000/appmetrica/submit/"
 
 ssn = requests.Session()
-
+'''
 rq = ssn.get(url)
 # rq_cookies = rq.cookies.get_dict()
 res = rq.text.split()
@@ -38,9 +38,9 @@ for item in res:
         break
         # print(item, token)
 
-data["csrfmiddlewaretoken"] = token
-
-rq2 = ssn.post(url, json=data, cookies=ssn.cookies)
+# data["csrfmiddlewaretoken"] = token
+'''
+rq2 = ssn.post(url, data=data)
 print(rq2.text)
 # print(res)
 
