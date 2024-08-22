@@ -14,13 +14,18 @@ def index(request):
     return render(
         request, 
         "appmetrica/index.html", 
-        {"product_list": product_list}
+        {
+            "product_list": product_list,
+            "integerinput": False,
+            "objectprompt": "Enter product name"
+        }
     )
 
 # view all metrics for a specific product
-def view_product(request, product_name):
-    if request.POST:
-        db_id = request.POST['in-name-prod-id']
+def view_product(request, product_id):
+    if request.method == "GET":
+        # db_id = request.GET['in-name-prod-id']
+        db_id = product_id
         product = get_object_or_404(Product, pk=db_id)
         metrics = get_list_or_404(Metric, fk_product=db_id)
         return render(
@@ -28,28 +33,40 @@ def view_product(request, product_name):
             "appmetrica/product.html",
             {
                 "product": product,
-                "metric_list": metrics
+                "metric_list": metrics,
+                "integerinput": False,
+                "objectprompt": "Enter metric name"
             }
         )
-        # return HttpResponse(product)
     else:
         return HttpResponseRedirect(reverse('appmetrica:index'))
 
 # view a graph for a specific metric in a product
-def view_metric(request, product_name, metric_name):
-    if request.method == "POST":
-        pid = request.POST['product-id']
-        mid = request.POST['metric-id']
+def view_metric(request, product_id, metric_id):
+    if request.method == "GET":
+        data = []
+        pid = request.GET['product-id']
+        mid = request.GET['metric-id']
         product = get_object_or_404(Product, pk=pid)
         metric = get_object_or_404(Metric, pk=mid)
-        data = get_list_or_404(MetricValue, fk_metric=mid)
+        rawdata = MetricValue.objects.filter(fk_metric=mid).all().values()
+        # rawdata = get_list_or_404(MetricValue, fk_metric=mid)
+        print(rawdata)
+        
+        for entry in rawdata:
+            print(entry)
+            data.append({"key": entry['int_timestamp'], "value": entry['int_value']})
+            # data[entry.int_timestamp] = entry.int_value
+
         return render(
             request,
             "appmetrica/metric.html",
             {
                 "product": product,
                 "metric": metric,
-                "data": data
+                "data": data,
+                "integerinput": True,
+                "objectprompt": "Enter values"
             }
         )
         # return HttpResponse(f"Metric {mid} ({metric_name}) for product {pid} ({product_name})")
@@ -57,12 +74,14 @@ def view_metric(request, product_name, metric_name):
         return HttpResponseRedirect(reverse('appmetrica:index'))
 
 # set a new metric value from systems (automated)
+# captures a single timestamp-value pair and saves it into db
+# may be possible to batch save 
 @csrf_exempt
 def submit_metric(request):
     if request.method == "POST":
         # get parameters of metric
-        # insert into db
-        pid = request.POST['product']
+        # product id is unnecessary
+        # pid = request.POST['product']
         mid = request.POST['metric']
         tstamp = request.POST['timestamp']
         value = request.POST['value']

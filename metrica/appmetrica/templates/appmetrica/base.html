@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{% static 'appmetrica/style.css' %}">
+		<link rel="icon" href="{% static 'appmetrica/favicon.svg' %}" type="image/svg+xml" />
+        <script src="{% static 'appmetrica/scripts.js' %}"></script>
+        {% block extras %}
+        {% endblock %}
+        {% block title %}
+        {% endblock %}
+    </head>
+    {% block bodydef %}
+    <body>
+    {% endblock %}
+        {% block popup %}
+        {% endblock %}
+        {% block addition %}
+        {% include "./addform.html" %}
+        {% endblock %}
+        <div class="container">
+            <div class="flex-container">
+                <div class="table-header">
+                    {% block tableheader %}
+                    {% endblock %}
+                </div>
+                <div class="table-navbar"></div>
+                <div class="table-contents">
+                    <div class="table-statusbar">
+                        {% block tablestatusbar %}
+                        {% endblock %}
+                    </div>
+                    <div class="table-inner-wrapper">
+                        {% block tableview %}
+                        {% endblock %}
+                    </div>
+                    {% include "./addbutton.html" %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
