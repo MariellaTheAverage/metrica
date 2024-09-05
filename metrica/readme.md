@@ -29,3 +29,9 @@ To launch the application run
 `python3 manage.py runserver <PORT>`
 
 Replace PORT with the port you'd like the app to listen on. Will default to 80 if omitted
+
+## Planned improvements
+- Cascade deletion support
+- Search and sort filters for the Product view and the Metric view
+- Better looking modals
+- Editable entry names
