@@ -9,15 +9,23 @@
 {% endblock %}
 
 {% block bodydef %}
-<body onload="buildAGraph({{data}}, '{{metric.str_name}}')">
+<body onload="buildAGraph({{ data }}, '{{metric.str_name}}')">
 {% endblock %}
 
 {% block popup %}
 {% include "./infopopup.html" %}
 {% endblock %}
 
+{% block addition %}
+{% url 'appmetrica:submit' as submit_url %}
+{% include "./addform.html" with funcname="addMetricValue" submiturl=submit_url %}
+{% url 'appmetrica:delvalue' as del_url %}
+{% include "./delpopup.html" with delfuncname="deleteMetricValue" delurl=del_url %}
+{% endblock %}
+
 {% block tableheader %}
-<div class="back-btn" onclick="redirectto('{% url 'appmetrica:product' product.id %}')">
+{% url 'appmetrica:product' product.id as producturl %}
+<div class="back-btn" onclick="redirectback('{{ producturl }}')">
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
     <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
   </svg>

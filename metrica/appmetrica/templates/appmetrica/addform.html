@@ -12,16 +12,16 @@
         <div class="ppp-body">
             {% if integerinput %}
             <label>Timestamp</label>
-            <input class="ppp-input">
+            <input class="ppp-input" id="addl-timestamp">
             <label>Value</label>
-            <input class="ppp-input">
+            <input class="ppp-input" id="addl-value">
             {% else %}
             <label>{{ object }}</label>
-            <input class="ppp-input">
+            <input class="ppp-input" id="addl-name">
             {% endif %}
         </div>
         <div class="ppp-submit-area">
-            <div class="ppp-submit-btn">
+            <div class="ppp-submit-btn add-btn" onclick="{{ funcname }}('{{ submiturl }}', {{ prodflag }})">
                 <p>Submit</p>
             </div>
         </div>

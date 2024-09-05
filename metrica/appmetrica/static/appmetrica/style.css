@@ -127,7 +127,7 @@ div.table-contents {
     padding: 3px;
     background-color: rgb(230,230,230);
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -161,6 +161,7 @@ div.product-entry {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 div.button-tray {
@@ -185,6 +186,8 @@ div.table-divider {
     width: 99%;
     height: 2px;
     margin: 0px 2px;
+    border-radius: 2px;
+    flex-shrink: 0;
 }
 
 p.entry-name {
@@ -250,4 +253,27 @@ div.sm {
 
 .ppp-body > label {
     margin-top: 5px;
+}
+
+div.ppp-submit-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    padding: 3px 0px;
+}
+
+div.ppp-submit-btn {
+    width: 100px !important;
+    padding: 3px 10px !important;
+    margin-top: 5px;
+    margin-right: 20px;
+}
+
+/* tooltip styles */
+.tt-wrapper {
+    border: 2px solid rgb(100,100,100);
+    border-radius: 4px;
+    background-color: rgb(180,180,180);
+    z-index: 1;
 }
